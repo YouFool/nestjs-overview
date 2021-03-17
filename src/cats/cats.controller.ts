@@ -12,4 +12,9 @@ export class CatsController {
     console.log(request);
     return 'This action returns all cats';
   }
+
+  @Get('wild*cat')
+  wildcard(): string {
+    return 'This is a wildcard route';
+  }
 }
