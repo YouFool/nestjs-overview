@@ -1,4 +1,4 @@
-import { Header, HttpCode } from '@nestjs/common';
+import { Header, HttpCode, Redirect } from '@nestjs/common';
 import { Controller, Get, Post, Req } from '@nestjs/common';
 
 @Controller('cats')
@@ -32,5 +32,12 @@ export class CatsController {
   @Get('wild*cat')
   wildcard(): string {
     return 'This is a wildcard route';
+  }
+
+  @Get('redirect')
+  @Redirect('https://nestjs.com', 301) // The statusCode defaults to 302 if omitted
+  redirectToNestJs() {
+    // We can either use a @Redirect() decorator or call res.redirect() with @Res()
+    return;
   }
 }
