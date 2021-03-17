@@ -1,5 +1,13 @@
-import { Header, HttpCode, Redirect } from '@nestjs/common';
-import { Controller, Get, Post, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Header,
+  HttpCode,
+  Param,
+  Post,
+  Redirect,
+  Req,
+} from '@nestjs/common';
 
 @Controller('cats')
 export class CatsController {
@@ -39,5 +47,20 @@ export class CatsController {
   redirectToNestJs() {
     // We can either use a @Redirect() decorator or call res.redirect() with @Res()
     return;
+  }
+
+  @Get(':id')
+  findOne(@Param() params): string {
+    // In order to define routes with parameters, we can add route parameter tokens in the
+    // path of the route to capture the dynamic value at that position in the request URL
+    console.log(params.id);
+    return `This action returns a cat with the id of #${params.id}`;
+  }
+
+  @Get(':catId')
+  findOneSpecifyParameter(@Param('catId') catId: string): string {
+    // We can also specify the parameters beforehand in the function declaration
+    console.log(catId);
+    return `This action returns a cat with the id of #${catId}`;
   }
 }
