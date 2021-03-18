@@ -8,6 +8,7 @@ import {
   Redirect,
   Req,
 } from '@nestjs/common';
+import { Observable, of } from 'rxjs';
 
 @Controller('cats')
 export class CatsController {
@@ -62,5 +63,15 @@ export class CatsController {
     // We can also specify the parameters beforehand in the function declaration
     console.log(catId);
     return `This action returns a cat with the id of #${catId}`;
+  }
+
+  @Get('async')
+  async findAllAsync(): Promise<any[]> {
+    return [];
+  }
+
+  @Get('asyncRxJs')
+  findAllRxJs(): Observable<any[]> {
+    return of([]);
   }
 }
