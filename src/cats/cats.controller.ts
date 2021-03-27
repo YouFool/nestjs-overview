@@ -11,46 +11,57 @@ import {
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { CreateCatDto } from '../dto/create-cat-dto';
+import { CatsService } from './cats.service';
+import { Cat } from '../models/Cat';
 
 @Controller('cats')
 export class CatsController {
+  constructor(private catsService: CatsService) {}
+
   @Post()
-  create(@Body() createCatDto: CreateCatDto): string {
+  create(@Body() catDto: CreateCatDto) {
     // The response status code is always 200 by default, except for POST requests which are 201.
-    console.log(createCatDto);
-    return 'This action adds a new cat';
+    console.log(catDto);
+    this.catsService.create(catDto);
+  }
+
+  @Post('createAsync')
+  async createAsync(@Body() catDto: CreateCatDto) {
+    // The response status code is always 200 by default, except for POST requests which are 201.
+    console.log(catDto);
+    this.catsService.create(catDto);
   }
 
   @Post('customHttpCode')
   @HttpCode(204)
-  createWithCustomHttpCode(@Body() createCatDto: CreateCatDto) {
+  createWithCustomHttpCode(@Body() catDto: CreateCatDto) {
     // In case of you status code isn't static, you can inject @Res() and manipulate the response manually
-    console.log(createCatDto);
-    return 'This action adds a new cat and returns 204 HTTP code';
+    console.log(catDto);
+    this.catsService.create(catDto);
   }
 
   @Post('customResponseHeader')
   @Header('Cache-Control', 'none')
-  createWithCustomResponseHeader(@Body() createCatDto: CreateCatDto) {
+  createWithCustomResponseHeader(@Body() catDto: CreateCatDto) {
     // We could also set headers using res.header() directly with @Res()
-    console.log(createCatDto);
-    return 'This action adds a new cat and returns a custom response header';
+    console.log(catDto);
+    this.catsService.create(catDto);
   }
 
   @Get()
-  findAll(@Req() request: Request): string {
+  findAll(@Req() request: Request): Cat[] {
     console.log(request);
-    return 'This action returns all cats';
+    return this.catsService.findAll();
   }
 
   @Get('async')
-  async findAllAsync(): Promise<any[]> {
-    return [];
+  async findAllAsync(): Promise<Cat[]> {
+    return this.catsService.findAll();
   }
 
   @Get('asyncRxJs')
   findAllRxJs(): Observable<any[]> {
-    return of([]);
+    return of(this.catsService.findAll());
   }
 
   @Get('wild*cat')
