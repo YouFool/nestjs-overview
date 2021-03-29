@@ -97,6 +97,8 @@ export class CatsController {
   }
 
   @Get(':catId')
+  // We can also build a new instance to customize the pipes behavior:
+  // new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })
   findOneSpecifyParameter(@Param('catId', ParseIntPipe) catId: number): string {
     // We can also specify the parameters beforehand in the function declaration
     console.log(catId);
