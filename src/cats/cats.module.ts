@@ -7,4 +7,7 @@ import { CatsService } from './cats.service';
   providers: [CatsService],
   exports: [CatsService],
 })
-export class CatsModule {}
+export class CatsModule {
+  // We can also inject providers at the module (i.e for configuration purposes)
+  // constructor(private catsService: CatsService) {}
+}
