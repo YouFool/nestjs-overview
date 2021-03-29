@@ -7,6 +7,7 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Post,
   Redirect,
   Req,
@@ -96,7 +97,7 @@ export class CatsController {
   }
 
   @Get(':catId')
-  findOneSpecifyParameter(@Param('catId') catId: string): string {
+  findOneSpecifyParameter(@Param('catId', ParseIntPipe) catId: number): string {
     // We can also specify the parameters beforehand in the function declaration
     console.log(catId);
     return `This action returns a cat with the id of #${catId}`;
