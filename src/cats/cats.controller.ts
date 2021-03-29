@@ -10,13 +10,19 @@ import {
   Post,
   Redirect,
   Req,
+  UseFilters,
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { CreateCatDto } from '../dto/create-cat-dto';
 import { CatsService } from './cats.service';
 import { Cat } from '../models/Cat';
+import { HttpExceptionFilter } from '../http-exception.filter';
 
 @Controller('cats')
+// @UseFilters(new HttpExceptionFilter())
+// We should use DI to instantiate the filter, it's better because we use a single instance
+// Besides Controllers, we're able to use the @UseFilters decorator on method-scope or in the global scope, see example in main.ts
+@UseFilters(HttpExceptionFilter)
 export class CatsController {
   constructor(private catsService: CatsService) {}
 
