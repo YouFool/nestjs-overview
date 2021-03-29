@@ -20,6 +20,7 @@ export class AppModule implements NestModule {
     consumer
       .apply(LoggerMiddleware)
       .forRoutes(
+        DevController,
         { path: 'cats', method: RequestMethod.GET },
         { path: 'ab*cd', method: RequestMethod.ALL },
       );
