@@ -7,6 +7,10 @@ async function bootstrap() {
   // We can also bind a functional Middleware to every registered route, this way:
   // app.use(anotherLoggerMiddleware);
 
+  // This way, we set a new global-scoped filter, but it cannot inject any dependencies
+  // To use a global-scoped filter with dependencies, see app.module.ts
+  // app.useGlobalFilters(new HttpExceptionFilter());
+
   await app.listen(3001);
 }
 bootstrap();
