@@ -4,6 +4,8 @@ import {
   Get,
   Header,
   HttpCode,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Redirect,
@@ -56,7 +58,10 @@ export class CatsController {
 
   @Get('async')
   async findAllAsync(): Promise<Cat[]> {
-    return this.catsService.findAll();
+    throw new HttpException(
+      { status: HttpStatus.FORBIDDEN, error: 'This is a custom message' },
+      HttpStatus.FORBIDDEN,
+    );
   }
 
   @Get('asyncRxJs')
