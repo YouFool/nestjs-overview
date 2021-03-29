@@ -1,7 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { CatsController } from './cats.controller';
 import { CatsService } from './cats.service';
 
+// We can also export the module globally, and it's providers will be available everywhere
+// This way, we can import helpers, db connections, etc
+@Global()
 @Module({
   controllers: [CatsController],
   providers: [CatsService],
