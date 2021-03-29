@@ -9,6 +9,7 @@ import { AppService } from './app.service';
 import { DevController } from './dev/dev.controller';
 import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './logger.middleware';
+import { anotherLoggerMiddleware } from './functional-logger.middleware';
 
 @Module({
   imports: [CatsModule],
@@ -18,7 +19,7 @@ import { LoggerMiddleware } from './logger.middleware';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
     consumer
-      .apply(LoggerMiddleware)
+      .apply(LoggerMiddleware, anotherLoggerMiddleware)
       .exclude({ path: 'dev', method: RequestMethod.POST })
       .forRoutes(
         DevController,
