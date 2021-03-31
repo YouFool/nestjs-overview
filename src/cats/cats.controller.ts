@@ -1,14 +1,17 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Get,
   Header,
   HttpCode,
   HttpException,
   HttpStatus,
   Param,
+  ParseBoolPipe,
   ParseIntPipe,
   Post,
+  Query,
   Redirect,
   Req,
   UseFilters,
@@ -65,7 +68,11 @@ export class CatsController {
   }
 
   @Get('async')
-  async findAllAsync(): Promise<Cat[]> {
+  async findAllAsync(
+    @Query('activeOnly', new DefaultValuePipe(false), ParseBoolPipe)
+    activeOnly: boolean,
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number,
+  ): Promise<Cat[]> {
     throw new HttpException(
       { status: HttpStatus.FORBIDDEN, error: 'This is a custom message' },
       HttpStatus.FORBIDDEN,
