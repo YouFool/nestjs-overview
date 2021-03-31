@@ -10,8 +10,9 @@ import { DevController } from './dev/dev.controller';
 import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './logger.middleware';
 import { anotherLoggerMiddleware } from './functional-logger.middleware';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { HttpExceptionFilter } from './http-exception.filter';
+import { ValidationPipe } from './validation.pipe';
 
 @Module({
   imports: [CatsModule],
@@ -20,7 +21,11 @@ import { HttpExceptionFilter } from './http-exception.filter';
     AppService,
     {
       provide: APP_FILTER,
-      useClass: HttpExceptionFilter, // Define global exception filter in our app module
+      useClass: HttpExceptionFilter, // Define global exception filter with dependencies in our app module
+    },
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe, // Define global pipe with dependencies in our app module
     },
   ],
 })
