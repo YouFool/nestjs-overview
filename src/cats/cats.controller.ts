@@ -1,20 +1,18 @@
 import {
   Body,
   Controller,
-  DefaultValuePipe,
   Get,
   Header,
   HttpCode,
   HttpException,
   HttpStatus,
   Param,
-  ParseBoolPipe,
   ParseIntPipe,
   Post,
-  Query,
   Redirect,
   Req,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { CreateCatDto } from '../dto/create-cat-dto';
@@ -22,12 +20,14 @@ import { CatsService } from './cats.service';
 import { Cat } from '../models/Cat';
 import { HttpExceptionFilter } from '../http-exception.filter';
 import { ValidationPipe } from '../validation.pipe';
+import { RolesGuard } from '../roles.guard';
 
 @Controller('cats')
 // @UseFilters(new HttpExceptionFilter())
 // We should use DI to instantiate the filter, it's better because we use a single instance
 // Besides Controllers, we're able to use the @UseFilters decorator on method-scope or in the global scope, see example in main.ts
 @UseFilters(HttpExceptionFilter)
+@UseGuards(RolesGuard)
 export class CatsController {
   constructor(private catsService: CatsService) {}
 
@@ -68,11 +68,12 @@ export class CatsController {
   }
 
   @Get('async')
-  async findAllAsync(
-    @Query('activeOnly', new DefaultValuePipe(false), ParseBoolPipe)
-    activeOnly: boolean,
-    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number,
-  ): Promise<Cat[]> {
+  async findAllAsync(): //
+  // We can also use DefaultValuePipe to provide sensible defaults
+  // @Query('activeOnly', new DefaultValuePipe(false), ParseBoolPipe)
+  // activeOnly: boolean,
+  // @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number,
+  Promise<Cat[]> {
     throw new HttpException(
       { status: HttpStatus.FORBIDDEN, error: 'This is a custom message' },
       HttpStatus.FORBIDDEN,
