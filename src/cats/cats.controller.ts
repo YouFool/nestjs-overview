@@ -18,6 +18,7 @@ import { CreateCatDto } from '../dto/create-cat-dto';
 import { CatsService } from './cats.service';
 import { Cat } from '../models/Cat';
 import { HttpExceptionFilter } from '../http-exception.filter';
+import { ValidationPipe } from '../validation.pipe';
 
 @Controller('cats')
 // @UseFilters(new HttpExceptionFilter())
@@ -28,7 +29,7 @@ export class CatsController {
   constructor(private catsService: CatsService) {}
 
   @Post()
-  create(@Body() catDto: CreateCatDto) {
+  create(@Body(new ValidationPipe()) catDto: CreateCatDto) {
     // The response status code is always 200 by default, except for POST requests which are 201.
     console.log(catDto);
     this.catsService.create(catDto);
