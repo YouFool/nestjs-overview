@@ -10,10 +10,11 @@ import { DevController } from './dev/dev.controller';
 import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './logger.middleware';
 import { anotherLoggerMiddleware } from './functional-logger.middleware';
-import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { HttpExceptionFilter } from './http-exception.filter';
 import { ValidationPipe } from './validation.pipe';
 import { RolesGuard } from './roles.guard';
+import { LoggingInterceptor } from './logging.interceptor';
 
 @Module({
   imports: [CatsModule],
@@ -31,6 +32,10 @@ import { RolesGuard } from './roles.guard';
     {
       provide: APP_GUARD,
       useClass: RolesGuard, // Define global guard with dependencies in our app module
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor, // Define global interceptor with dependencies in our app module
     },
   ],
 })

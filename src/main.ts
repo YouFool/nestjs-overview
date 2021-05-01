@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from './validation.pipe';
 import { RolesGuard } from './roles.guard';
+import { LoggingInterceptor } from './logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,7 +20,11 @@ async function bootstrap() {
 
   // We can also bind global scoped guards to apply authentication/authorization validation to every route handler
   // However, to use a global-scoped guards with dependencies, see app.module.ts
-  app.useGlobalGuards(new RolesGuard());
+  app.useGlobalGuards(new RolesGuard(null));
+
+  // We can also bind global scoped interceptors to intercept every route handler context
+  // However, to use a global-scoped interceptor with dependencies, see app.module.ts
+  app.useGlobalInterceptors(new LoggingInterceptor());
 
   await app.listen(3001);
 }
