@@ -13,6 +13,7 @@ import {
   Req,
   UseFilters,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { CreateCatDto } from '../dto/create-cat-dto';
@@ -22,13 +23,16 @@ import { HttpExceptionFilter } from '../http-exception.filter';
 import { ValidationPipe } from '../validation.pipe';
 import { RolesGuard } from '../roles.guard';
 import { Roles } from '../roles.decorator';
+import { LoggingInterceptor } from '../logging.interceptor';
 
 @Controller('cats')
 // @UseFilters(new HttpExceptionFilter())
 // We should use DI to instantiate the filter, it's better because we use a single instance
 // Besides Controllers, we're able to use the @UseFilters decorator on method-scope or in the global scope, see example in main.ts
+// Remember: pipes, guards and interceptors can be controller-scoped, method-scoped or global-scoped
 @UseFilters(HttpExceptionFilter)
 @UseGuards(RolesGuard)
+@UseInterceptors(LoggingInterceptor)
 export class CatsController {
   constructor(private catsService: CatsService) {}
 
